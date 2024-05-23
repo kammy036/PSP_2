@@ -94,13 +94,16 @@ def main():
     game_options_list = ["list", "buy", "search", "high", "add", 'remove', "play", "chips", "quit"]
 
     while True:
-        choice = input("Please enter choice\n [list", "buy", "search", "high", "add", 'remove', "play", "chips", "quit]").strip.lower
+        choice = input("Please enter choice\n[list, buy, search, high, add, remove, play, chips, quit]").strip().lower()
 
         if choice not in game_options_list:
             print('Not a valid command - please try again.')
         else:
             
             if choice == "quit":
+                write_to_file(filename, player_list)
+                print("Quitting the program.")
+                print("\n\n-- Program terminating--\n\n")
                 return
             elif choice == "list":
                 display_players(player_list)
@@ -116,7 +119,7 @@ def main():
                 print("in remove command")
             elif choice == "chips":
                 print("in chips command")
-                      
+
             elif choice == "play":
                 player_name = input("Enter player's name:")
                 player = None
@@ -130,8 +133,8 @@ def main():
                         game_result, no_chips = blackjack.play_one_game(no_chips)
                         update_players(player_list, player_name, no_chips, game_result)
     
-                    else:
-                        print(f"Player {player_name} not found")
+                else:
+                    print(f"Player {player_name} not found")
                 
 
             print("\n\n-- Program terminating --\n")
