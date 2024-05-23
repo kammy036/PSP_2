@@ -56,10 +56,10 @@ def write_to_file(filename, player_list):
     with open(filename, "w") as outfile:
         for player in player_list:
             name = player[0]
-            games_played, no_won, no_los, no_drawn, chips, total_score = player[1:]
+            games_played, no_won, no_lost, no_drawn, chips, total_score = player[1:]
             outfile.write(f"{name}\n")
-            outfile.write(f"{games_played} {no_won} {no_los} {no_drawn} {chips} {total_score}\n")
-    return("hello from write_to_file")
+            outfile.write(f"{games_played} {no_won} {no_lost} {no_drawn} {chips} {total_score}\n")
+    #return("hello from write_to_file")
     
     ### Place the rest of your function definitions here...  : )
 
@@ -82,6 +82,11 @@ def update_players(player_list, player_name, no_chips, game_result):
     if updated != "Y":
         print("error message from update_players")
         
+def find_player(player_list, name):
+    for index in range(len(player_list)):
+        if player_list[index][0] == name:
+            return index
+    return -1
 
 
 def main():
@@ -109,8 +114,21 @@ def main():
                 display_players(player_list)
             elif choice == "buy":
                 print("in buy command")
+
+
+                
             elif choice == "search":
                 print("in search command")
+                player_name = input("Enter player's name to searth: ")
+                player_find = find_player(player_list, player_name)
+                if player_find != -1:
+                    player = player_list[player_find]
+                    print(f"Player found {player}")
+                else:
+                    print(f"Player {player_name} not found")
+
+
+
             elif choice == "high":
                 print("in high command")
             elif choice == "add":
@@ -122,16 +140,13 @@ def main():
 
             elif choice == "play":
                 player_name = input("Enter player's name:")
-                player = None
-                found = "N"
-                for player_data in player_list:
-                    if player_data[0] == player_name:
-                        player = player_data
-                        found = "Y"
-                    if found == "Y":
-                        no_chips = player[5]
-                        game_result, no_chips = blackjack.play_one_game(no_chips)
-                        update_players(player_list, player_name, no_chips, game_result)
+                player_find = find_player(player_list, player_name)
+                
+                if player_find != -1:
+                    player = player_list[player_find]
+                    no_chips = player[5]
+                    game_result, no_chips = blackjack.play_one_game(no_chips)
+                    update_players(player_list, player_name, no_chips, game_result)
     
                 else:
                     print(f"Player {player_name} not found")
@@ -141,6 +156,12 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
 
             ###output_filename = 'new_players.txt'
             ###write_to_file(output_filename, player_list)
