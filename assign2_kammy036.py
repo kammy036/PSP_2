@@ -1,7 +1,4 @@
 import blackjack
-import os
-
-
 
 # Function read_file() - place your own comments here...  : )
 def read_file(filename):
@@ -36,10 +33,9 @@ def read_file(filename):
     return player_list
 
 
-# Function display_players() - place your own comments here...  : )
+# Function display_players()
 def display_players(player_list):
     
-    # This line will eventually be removed - used for development purposes only.
     print("In function display_players()")
 
     print("="*59)    
@@ -67,57 +63,116 @@ def write_to_file(filename, player_list):
     
     ### Place the rest of your function definitions here...  : )
 
-
+def update_players(player_list, player_name, no_chips, game_result):
+    updated = "N"
+    for player in player_list:
+        if player[0] == player_name:
+            player[1] += 1
+            if game_result == 2:
+                player[2] += 1
+                player[6] += 3
+            elif game_result == 1:
+                player[4] += 1
+                player[6] += 1
+            else:
+                player[3] += 1
+            player[5] = no_chips
+            
+            updated = 'Y'
+    if updated != "Y":
+        print("error message from update_players")
+        
 
 
 def main():
 
-    ### Define list to store player information
     filename = "players.txt"
-    #filename = 'D:/Source/PSP_Assesment/PSP2/players.txt'    
     player_list= read_file(filename)
     display_players(player_list)
 
-    output_filename = 'new_players.txt'
-    write_to_file(output_filename, player_list)
 
-    new_player_list = read_file(output_filename)
-    display_players(new_player_list)
+    game_options_list = ["list", "buy", "search", "high", "add", 'remove', "play", "chips", "quit"]
 
+    while True:
+        choice = input("Please enter choice\n [list", "buy", "search", "high", "add", 'remove', "play", "chips", "quit]").strip.lower
 
-    player_list = []
-    no_chips = 100
-    game_result = 0
+        if choice not in game_options_list:
+            print('Not a valid command - please try again.')
+        else:
+            
+            if choice == "quit":
+                return
+            elif choice == "list":
+                display_players(player_list)
+            elif choice == "buy":
+                print("in buy command")
+            elif choice == "search":
+                print("in search command")
+            elif choice == "high":
+                print("in high command")
+            elif choice == "add":
+                print("in add command")
+            elif choice == "remove":
+                print("in remove command")
+            elif choice == "chips":
+                print("in chips command")
+                      
+            elif choice == "play":
+                player_name = input("Enter player's name:")
+                player = None
+                found = "N"
+                for player_data in player_list:
+                    if player_data[0] == player_name:
+                        player = player_data
+                        found = "Y"
+                    if found == "Y":
+                        no_chips = player[5]
+                        game_result, no_chips = blackjack.play_one_game(no_chips)
+                        update_players(player_list, player_name, no_chips, game_result)
+    
+                    else:
+                        print(f"Player {player_name} not found")
+                
 
-    blackjack.play_one_game(no_chips)
-
-
-
-    # Read player information from file and store in player_list
-    player_list = read_file("players.txt")
-
-
-    ### you will remove some of the following code as it's been included for development purposes only...  : )
-
-    # Display player list to the screen to ensure read_file is working correctly
-    for player in player_list:
-        print(player)
-
-        
-    no_chips = 100
-    game_result = 0
-
-    # Plays one game of blackJack and assigns the result of the game and the chip balance
-    # to variables game_result and no_chips respectively.
-    game_result, no_chips = blackjack.play_one_game(no_chips)
-
-    # Display to the screen the result of play_one_game() – game result (value of 3, 1 or 0)
-    # and number of chips remaining.
-    print(game_result, no_chips)
-
-
-
-    print("\n\n-- Program terminating --\n")
+            print("\n\n-- Program terminating --\n")
 
 if __name__ == "__main__":
     main()
+
+            ###output_filename = 'new_players.txt'
+            ###write_to_file(output_filename, player_list)
+
+            ###new_player_list = read_file(output_filename)
+            ###display_players(new_player_list)
+
+
+
+
+            ##blackjack.play_one_game(no_chips)
+
+
+
+            # Read player information from file and store in player_list
+            #player_list = read_file("players.txt")
+
+
+            ### you will remove some of the following code as it's been included for development purposes only...  : )
+
+            # Display player list to the screen to ensure read_file is working correctly
+
+
+            # for player in player_list:
+            #     print(player)
+
+            
+
+            # Plays one game of blackJack and assigns the result of the game and the chip balance
+            # to variables game_result and no_chips respectively.
+            #game_result, no_chips = blackjack.play_one_game(no_chips)
+
+            # Display to the screen the result of play_one_game() – game result (value of 3, 1 or 0)
+            # and number of chips remaining.
+            #print(game_result, no_chips)
+
+
+
