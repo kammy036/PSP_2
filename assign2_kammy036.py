@@ -42,13 +42,14 @@ def display_players(player_list):
     print("-                     Player Summary                      -")
     print("="*59)   
     print("-                             P  W  L  D   Chips   Score  -")
-    print("="*59)    
+    print("-"*59)    
 
 
     for player in player_list:
         name = player[0]
         p, w, l, d, chips, score = player[1:]
         print(f"-  {name:<25} {p:>2} {w:>2} {l:>2} {d:>2} {chips:>8} {score:>6}  -")
+        print("-"*59)
     print("="*59)
 
 def write_to_file(filename, player_list):
@@ -68,7 +69,7 @@ def update_players(player_list, player_name, no_chips, game_result):
     for player in player_list:
         if player[0] == player_name:
             player[1] += 1
-            if game_result == 2:
+            if game_result == 3:
                 player[2] += 1
                 player[6] += 3
             elif game_result == 1:
@@ -86,7 +87,34 @@ def find_player(player_list, name):
     for index in range(len(player_list)):
         if player_list[index][0] == name:
             return index
-    return -1
+    return "unfound"
+
+def add_player(player_list):
+
+    player_name = input("Enter new player's name: ")
+
+    if find_player(player_list, player_name) != "unfound":
+        print(f"Player {player_name} already exists")
+        return
+    games_played = 0
+    no_won = 0
+    no_lost = 0
+    no_drawn = 0
+    chips = 100
+    total_score = 0 
+
+
+
+    new_player = [player_name, games_played, no_won, no_lost, no_drawn, chips, total_score]
+
+    player_list.append(new_player)
+    print(f"Successfully added {player_name} to player list.")
+
+def buy_player_chips(player_list):
+    player_name = input("Enter player name")
+
+    
+
 
 
 def main():
@@ -94,6 +122,7 @@ def main():
     filename = "players.txt"
     player_list= read_file(filename)
     display_players(player_list)
+
 
 
     game_options_list = ["list", "buy", "search", "high", "add", 'remove', "play", "chips", "quit"]
@@ -121,7 +150,7 @@ def main():
                 print("in search command")
                 player_name = input("Enter player's name to searth: ")
                 player_find = find_player(player_list, player_name)
-                if player_find != -1:
+                if player_find != "unfound":
                     player = player_list[player_find]
                     print(f"Player found {player}")
                 else:
@@ -132,7 +161,7 @@ def main():
             elif choice == "high":
                 print("in high command")
             elif choice == "add":
-                print("in add command")
+                add_player(player_list)
             elif choice == "remove":
                 print("in remove command")
             elif choice == "chips":
@@ -142,7 +171,7 @@ def main():
                 player_name = input("Enter player's name:")
                 player_find = find_player(player_list, player_name)
                 
-                if player_find != -1:
+                if player_find != "unfound":
                     player = player_list[player_find]
                     no_chips = player[5]
                     game_result, no_chips = blackjack.play_one_game(no_chips)
@@ -152,7 +181,7 @@ def main():
                     print(f"Player {player_name} not found")
                 
 
-            print("\n\n-- Program terminating --\n")
+            
 
 if __name__ == "__main__":
     main()
