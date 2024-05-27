@@ -111,7 +111,32 @@ def add_player(player_list):
     print(f"Successfully added {player_name} to player list.")
 
 def buy_player_chips(player_list):
-    player_name = input("Enter player name")
+    player_name = input("Please enter name: ")
+    player_find = find_player(player_list, player_name)
+    invalid_value = True
+    invalid_name = True
+
+    while invalid_name == True:
+
+        if player_find == "unfound":
+            print(f"{player_name} is not found in player list.")
+            invalid_name = True
+            player_name = input("Please enter name: ")
+
+        elif player_find != "unfound":
+            print(f"{player_list[player_find][0]} currently has {player_list[player_find][5]} chips\n")
+            amount_add = int(input("How many chips would you like to buy?: "))
+            invalid_name = False
+
+            while invalid_value == True:
+                if amount_add > 0 and amount_add <= 100:
+                    player_list[player_find][5] += amount_add
+                    print(f"Successfully updated {player_list[player_find][0]}'s chip balance to {player_list[player_find][5]}")
+                    invalid_value = False
+                else:
+                    print("You may only buy between 1-100 chips at a time!")
+                    amount_add = int(input("How many chips would you like to buy?: "))
+
 
     
 
@@ -142,10 +167,7 @@ def main():
             elif choice == "list":
                 display_players(player_list)
             elif choice == "buy":
-                print("in buy command")
-
-
-                
+                buy_player_chips(player_list)
             elif choice == "search":
                 print("in search command")
                 player_name = input("Enter player's name to searth: ")
