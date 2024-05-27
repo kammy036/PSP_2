@@ -96,14 +96,13 @@ def add_player(player_list):
     if find_player(player_list, player_name) != "unfound":
         print(f"Player {player_name} already exists")
         return
+    
     games_played = 0
     no_won = 0
     no_lost = 0
     no_drawn = 0
     chips = 100
     total_score = 0 
-
-
 
     new_player = [player_name, games_played, no_won, no_lost, no_drawn, chips, total_score]
 
@@ -136,8 +135,15 @@ def buy_player_chips(player_list):
                 else:
                     print("You may only buy between 1-100 chips at a time!")
                     amount_add = int(input("How many chips would you like to buy?: "))
-
-
+                    
+def remove_player(player_list, name):
+    player_find = find_player(player_list,name)
+    if player_find == "unfound":
+        print(f"{name} is not found in players.")
+    else:
+        del player_list[player_find]
+        print(f"\nSuccessfully removed {name} from player list.\n\n")
+    return player_list
     
 
 
@@ -166,8 +172,12 @@ def main():
                 return
             elif choice == "list":
                 display_players(player_list)
+
+
             elif choice == "buy":
                 buy_player_chips(player_list)
+
+
             elif choice == "search":
                 print("in search command")
                 player_name = input("Enter player's name to searth: ")
@@ -182,12 +192,20 @@ def main():
 
             elif choice == "high":
                 print("in high command")
+
+
             elif choice == "add":
                 add_player(player_list)
+
+
             elif choice == "remove":
-                print("in remove command")
+                name = input("Please enter name: ")
+                remove_player(player_list,name)
+
             elif choice == "chips":
                 print("in chips command")
+                
+
 
             elif choice == "play":
                 player_name = input("Enter player's name:")
