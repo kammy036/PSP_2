@@ -1,3 +1,13 @@
+#
+# File: assign2_kammy036.py
+# Author: Max Kamp
+# Email Id: kammy036@mymail.unisa.edu.au
+# Description: Assignment 2 – place assignment description here…
+# This is my own work as defined by the University's
+# Academic Misconduct policy.
+#
+
+
 import blackjack
 
 # Function read_file() - place your own comments here...  : )
@@ -48,7 +58,7 @@ def display_players(player_list):
     for player in player_list:
         name = player[0]
         p, w, l, d, chips, score = player[1:]
-        print(f"-  {name:<25} {p:>2} {w:>2} {l:>2} {d:>2} {chips:>8} {score:>6}  -")
+        print(f"-  {name:<25} {p:>2} {w:>2} {l:>2} {d:>2} {chips:>8} {score:>4}  -")
         print("-"*59)
     print("="*59)
 
@@ -205,8 +215,6 @@ def main():
             elif choice == "chips":
                 print("in chips command")
                 
-
-
             elif choice == "play":
                 player_name = input("Enter player's name:")
                 player_find = find_player(player_list, player_name)
