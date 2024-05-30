@@ -154,11 +154,58 @@ def remove_player(player_list, name):
         del player_list[player_find]
         print(f"\nSuccessfully removed {name} from player list.\n\n")
     return player_list
+
+def display_highest_chip_holder(player_list):
+    if not player_list:
+        print("no players in the list")
+        return
+
+    Player_with_most_chips = None
+
+    for player in player_list:
+        if Player_with_most_chips is None or player[5] > Player_with_most_chips[5] or (player[5] == Player_with_most_chips and player[1] < Player_with_most_chips[1]):
+            Player_with_most_chips = player
+
+    if Player_with_most_chips[5] == 0:
+         print("No player with a highest chip balance (all players have a balance of 0 chips)")
+    else:
+        print(f"Highest Chip Holder => {Player_with_most_chips[0]} with {Player_with_most_chips[5]}")
+
+    
+def play_blackjack_games(player_list, player_pos):
+    player = player_list[player_pos]
+    player_name = player[0]
+    no_chips = player[5]
+    keep_gaming = True
+
+    while keep_gaming == True:
+        print(f"Starting a new game for {player_name}. current chips: {no_chips}")
+        game_result, no_chips = blackjack.play_one_game(no_chips) 
+
+        player[1] += 1
+        if game_result == 3:
+            player[2] += 1
+            player[6] += 3
+        elif game_result == 1:
+            player[4] += 1
+            player[6] += 1
+        else:
+            player[3] += 1
+        player[5] = no_chips
+
+
+        play_again = input("Play again [y|n]?: ").strip().lower()
+        if play_again == "y":
+            keep_gaming = True
+        else:
+            keep_gaming = False
+            
     
 
 
 
 def main():
+
 
     filename = "players.txt"
     player_list= read_file(filename)
@@ -168,8 +215,10 @@ def main():
 
     game_options_list = ["list", "buy", "search", "high", "add", 'remove', "play", "chips", "quit"]
 
+
     while True:
         choice = input("Please enter choice\n[list, buy, search, high, add, remove, play, chips, quit]").strip().lower()
+
 
         if choice not in game_options_list:
             print('Not a valid command - please try again.')
@@ -201,7 +250,7 @@ def main():
 
 
             elif choice == "high":
-                print("in high command")
+                display_highest_chip_holder(player_list)
 
 
             elif choice == "add":
@@ -220,60 +269,18 @@ def main():
                 player_find = find_player(player_list, player_name)
                 
                 if player_find != "unfound":
-                    player = player_list[player_find]
-                    no_chips = player[5]
-                    game_result, no_chips = blackjack.play_one_game(no_chips)
-                    update_players(player_list, player_name, no_chips, game_result)
+
+                    play_blackjack_games(player_list, player_find)
+
+
+                    # player = player_list[player_find]
+                    # no_chips = player[5]
+                    # game_result, no_chips = blackjack.play_one_game(no_chips)
+                    # update_players(player_list, player_name, no_chips, game_result)
     
                 else:
-                    print(f"Player {player_name} not found")
-                
+                    print(f"Player {player_name} not found")        
 
-            
-
-if __name__ == "__main__":
-    main()
-
-
-
-
-
-
-
-            ###output_filename = 'new_players.txt'
-            ###write_to_file(output_filename, player_list)
-
-            ###new_player_list = read_file(output_filename)
-            ###display_players(new_player_list)
-
-
-
-
-            ##blackjack.play_one_game(no_chips)
-
-
-
-            # Read player information from file and store in player_list
-            #player_list = read_file("players.txt")
-
-
-            ### you will remove some of the following code as it's been included for development purposes only...  : )
-
-            # Display player list to the screen to ensure read_file is working correctly
-
-
-            # for player in player_list:
-            #     print(player)
-
-            
-
-            # Plays one game of blackJack and assigns the result of the game and the chip balance
-            # to variables game_result and no_chips respectively.
-            #game_result, no_chips = blackjack.play_one_game(no_chips)
-
-            # Display to the screen the result of play_one_game() – game result (value of 3, 1 or 0)
-            # and number of chips remaining.
-            #print(game_result, no_chips)
-
+main()
 
 
