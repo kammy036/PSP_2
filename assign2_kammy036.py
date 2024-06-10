@@ -218,7 +218,6 @@ def sort_by_chips(player_list):
                 # this creates a tuple of the twi eklements on the right hand side and the left side shows where the elements should be in respect to the number of chips.
                 sorted_list[j], sorted_list[j+1] = sorted_list[j+1], sorted_list[j]
     
-    
     return sorted_list
 
 
@@ -285,7 +284,27 @@ def main():
 
             elif choice == "chips":
                 print("in chips command")
-                sort_by_chips(player_list)
+                sorted_list = sort_by_chips(player_list)
+
+                print("Sorted in decending order")
+
+                print("="*59)    
+                print("-                     Player Summary                      -")
+                print("="*59)   
+                print("-                             P  W  L  D   Chips   Score  -")
+                print("-"*59)    
+
+
+                for player in sorted_list:
+                    name = player[0]
+                    p, w, l, d, chips, score = player[1:]
+                    print(f"-  {name:<25} {p:>2} {w:>2} {l:>2} {d:>2} {chips:>8} {score:>4}  -")
+                    print("-"*59)
+                print("="*59)
+                
+
+
+
                 
             elif choice == "play":
                 player_name = input("Enter player's name:")
