@@ -69,10 +69,11 @@ def write_to_file(filename, player_list):
             name = player[0]
             games_played, no_won, no_lost, no_drawn, chips, total_score = player[1:]
             outfile.write(f"{name}\n")
-            outfile.write(f"{games_played} {no_won} {no_lost} {no_drawn} {chips} {total_score}\n")
-    #return("hello from write_to_file")
-    
-    ### Place the rest of your function definitions here...  : )
+            outfile.write(f"{games_played} {no_won} {no_lost} {no_drawn} {chips} {total_score}\n")    
+
+
+
+
 
 def update_players(player_list, player_name, no_chips, game_result):
     updated = "N"
@@ -201,6 +202,27 @@ def play_blackjack_games(player_list, player_pos):
             keep_gaming = False
             
     
+def sort_by_chips(player_list):
+    #creating a new list and gets the infomatuion in the list of lists
+    sorted_list = [player[:] for player in player_list]
+
+    n = len(sorted_list)
+    for i in range(n):
+
+        # this loops through from the start to the end of the unsorted section to determine
+        for j in range(0,n-i-1):
+
+            #this if statments asks if and element of chips is greater then the other or if they're the same ammount of chips but pne has more games played
+            if sorted_list[j][5] < sorted_list[j+1][5] or (sorted_list[j][5] == sorted_list[j+1][5] and sorted_list[j][1] > sorted_list[j+1][1]):
+                
+                # this creates a tuple of the twi eklements on the right hand side and the left side shows where the elements should be in respect to the number of chips.
+                sorted_list[j], sorted_list[j+1] = sorted_list[j+1], sorted_list[j]
+    
+    
+    return sorted_list
+
+
+
 
 
 
@@ -263,6 +285,7 @@ def main():
 
             elif choice == "chips":
                 print("in chips command")
+                sort_by_chips(player_list)
                 
             elif choice == "play":
                 player_name = input("Enter player's name:")
